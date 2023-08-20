@@ -1,14 +1,14 @@
 #include "main.h"
-void print_buffer(char buffer[], int *buff_ind);
+void print_buffer(char buffer[], int *buff_index);
 /**
-* _printf - Printf function
-* @format: format.
-* Return: Printed chars.
+* _printf - this is Printf function
+* @format: the char before elipsis.
+* Return: to return Printed chars.
 */
 int _printf(const char *format, ...)
 {
-int i, printed = 0, printed_chars = 0;
-int flags, width, precision, size, buff_ind = 0;
+int i, print = 0, printed_chars = 0;
+int flags, width, precision, size, buff_index = 0;
 va_list list;
 char buffer[BUFF_SIZE];
 if (format == NULL)
@@ -18,28 +18,28 @@ for (i = 0; format && format[i] != '\0'; i++)
 {
 if (format[i] != '%')
 {
-buffer[buff_ind++] = format[i];
-if (buff_ind == BUFF_SIZE)
-print_buffer(buffer, &buff_ind);
+buffer[buff_index++] = format[i];
+if (buff_index == BUFF_SIZE)
+print_buffer(buffer, &buff_index);
 /* write(1, &format[i], 1);*/
 printed_chars++;
 }
 else
 {
-print_buffer(buffer, &buff_ind);
+print_buffer(buffer, &buff_index);
 flags = get_flags(format, &i);
 width = get_width(format, &i, list);
 precision = get_precision(format, &i, list);
 size = get_size(format, &i);
 ++i;
-printed = handle_print(format, &i, list, buffer,
+print = handle_print(format, &i, list, buffer,
 flags, width, precision, size);
-if (printed == -1)
+if (print == -1)
 return (-1);
-printed_chars += printed;
+printed_chars += print;
 }
 }
-print_buffer(buffer, &buff_ind);
+print_buffer(buffer, &buff_index);
 va_end(list);
 return (printed_chars);
 }
@@ -48,9 +48,9 @@ return (printed_chars);
 * @buffer: Array of chars
 * @buff_ind: Index at which to add next char, represents the length.
 */
-void print_buffer(char buffer[], int *buff_ind)
+void print_buffer(char buffer[], int *buff_index)
 {
-if (*buff_ind > 0)
-write(1, &buffer[0], *buff_ind);
-*buff_ind = 0;
+if (*buff_index > 0)
+write(1, &buffer[0], *buff_index);
+*buff_index = 0;
 }
